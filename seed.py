@@ -1,7 +1,8 @@
 # seed.py
 
 from sqlalchemy.orm import sessionmaker, Session
-from data.kashta_data import Kashtas_list
+from data.kashta_data import Kashtas_list , Packages_list
+from data.user_data import user_list # Add user list
 from config.environment import db_URI
 from sqlalchemy import create_engine
 from models.kashta import Base, KashtaModel
@@ -17,11 +18,20 @@ try:
     Base.metadata.drop_all(bind=engine)
     Base.metadata.create_all(bind=engine)
 
+    
     print("seeding the database...")
     # Seed kashtas
     db = SessionLocal()
+
+    db.add_all(user_list)# هنا ضروري الترتيب فاللي له ون في الريليشن يكون قبلو هكذا
+    db.commit()
+
     db.add_all(Kashtas_list)
     db.commit()
+    
+    db.add_all(Packages_list)
+    db.commit()
+
     db.close()
 
     print("Database seeding complete! 👋")

@@ -1,10 +1,15 @@
-from sqlalchemy import Column, Integer, String, Boolean
+from sqlalchemy import Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Enum as SQLEnum
+from enum import Enum
+from .base import BaseModel
 
-Base = declarative_base()
 
+class CategoryEnum(str, Enum):
+    SUMMER = "summer"
+    WINTER = "winter"
 
-class KashtaModel(Base):
+class KashtaModel(BaseModel):
 
     # This will be used directly to make a
     # TABLE in Postgresql
@@ -16,4 +21,7 @@ class KashtaModel(Base):
     name = Column(String, unique=True)
     city = Column(String)
     discription = Column(String)
-    price = (Integer)
+    kashtaPrice = Column(Integer)
+    category = Column(SQLEnum(CategoryEnum))
+    kashtaImage = Column(String)
+

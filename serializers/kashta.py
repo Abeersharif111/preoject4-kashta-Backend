@@ -1,0 +1,41 @@
+# serializers/kashta.py
+
+from pydantic import BaseModel
+from typing import Optional, List
+from models.kashta import CategoryEnum
+
+#controling outgoing
+#doing serialization when sending data to the user or browser by convert it from js to Json
+class KashtaSchema(BaseModel):
+  id: Optional[int] = True # This makes sure you don't have to explicitly add an id when sending json data
+  name: str
+  city: str
+  discription: str
+  kashtaPrice : int
+  category : CategoryEnum
+  kashtaImage : str
+
+  #user: UserSchema
+  #comments: List[CommentSchema] = []
+
+  class Config:
+    orm_mode = True
+    
+#controling incoming
+#doing deserialization when we are getting data from the user by convert it from json to html
+class CreateKashtaSchema(BaseModel):
+  name: str
+  city: str
+  discription: str
+  kashtaPrice : int 
+  category : CategoryEnum
+  kashtaImage : str
+
+
+class UpdateKashtaSchema(BaseModel):
+  name: str
+  city: str
+  kashtaPrice : int 
+  category : CategoryEnum
+  kashtaImage : str
+

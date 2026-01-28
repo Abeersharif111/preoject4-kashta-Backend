@@ -5,7 +5,12 @@ from data.kashta_data import Kashtas_list , Packages_list
 from data.user_data import user_list # Add user list
 from config.environment import db_URI
 from sqlalchemy import create_engine
-from models.kashta import Base, KashtaModel
+from models.base import Base
+from models.kashta import KashtaModel
+from models.package import PackageModel
+from models.booking import BookingModel
+from models.user import UserModel
+
 
 engine = create_engine(db_URI)
 SessionLocal = sessionmaker(bind=engine)

@@ -11,7 +11,8 @@ class UserRegistrationSchema(BaseModel):
 class UserLoginSchema(BaseModel):
     username: str  # Username provided by the user during login
     password: str  # Plain text password provided by the user during login
-    role: str
+    # user_role: str
+    
 # New schema for the response (containing the JWT token and a success message)
 class UserTokenSchema(BaseModel):
     token: str  # JWT token generated upon successful login

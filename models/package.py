@@ -1,9 +1,9 @@
 from .base import BaseModel
 from sqlalchemy import Column ,Integer,String , ForeignKey 
 from sqlalchemy.orm import  relationship 
-#from .user import UserModel
+from .user import UserModel
 
-class PackagetModel(BaseModel):
+class PackageModel(BaseModel):
 
     __tablename__ ="packages"    #table plurl intety sigiler
 
@@ -11,14 +11,14 @@ class PackagetModel(BaseModel):
     name = Column(String, nullable=False)
     discription = Column(String,nullable=False)
     packageprice = Column(Integer,nullable=False)
-    packageImage = Column( String ,nullable=False)
+    packageImage = Column( String, default=None)
 
-    # CommentModel
+    # 
     kashta_id = Column(Integer, ForeignKey("kashtas.id", ondelete="CASCADE"), nullable=False)
-    user_id = Column(Integer, ForeignKey('users.id',ondelete="CASCADE"), nullable =False )
-    
-    kashta = relationship("KashtaModel", back_populates="packages", passive_deletes=True)
-    user = relationship('UserModel', back_populates='packages', passive_deletes=True)
+    owner_id = Column(Integer, ForeignKey('users.id',ondelete="CASCADE"))
+    # 1 kashta belongs to 1 renter
+    kashta = relationship("KashtaModel", back_populates='packages')
+    owner = relationship('UserModel', back_populates='packages', passive_deletes=True)
 
 
 

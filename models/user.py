@@ -20,15 +20,16 @@ class UserModel(BaseModel):
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String, nullable=False,unique=True)  # Each username must be unique
     password = Column(String, nullable=True , unique=True)  # Add new field for storing the hashed password
-    role = Column(String, nullable=False, default="customer")  # Each email must be unique
+    user_role = Column(String, nullable=False, default="customer")  # Each email must be unique
+
 #relationships
-    # NEW: Relationship - a user can have multiple teas
-
-    #Has Many
+    # NEW: Relationship - a user can have multiple kashtas , packages , bookings
+  
     kashtas = relationship('KashtaModel', back_populates='user',cascade="all,delete-orphan")
-    packages = relationship('PackageModel', back_populates='user',  cascade="all, delete-orphan")
+    packages = relationship('PackageModel', back_populates='owner',  cascade="all, delete-orphan")
+    bookings = relationship("BookingModel", back_populates="renter",cascade="all, delete-orphan")
 
-     #Belongs to
+     
 
 
 # Method to hash and store the password
@@ -47,7 +48,7 @@ class UserModel(BaseModel):
             "iat": datetime.now(timezone.utc),  # Issued at time
             "sub": str(self.id),  # Subject - the user ID need to be converted to string instaed of int bcs puthon not accept it
             "username": self.username,
-            "role": self.role
+            "user_role": self.user_role
         }
 
         # Create the JWT token

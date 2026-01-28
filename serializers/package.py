@@ -11,9 +11,8 @@ class PackageSchema(BaseModel):
   name :str
   discription : str
   packageprice : int
-  packageImage : str
-
-  user: UserSchema
+  packageImage : Optional[str] = None
+  owner: UserSchema
 
   
   class Config:
@@ -24,20 +23,12 @@ class CreatePackageSchema(BaseModel):
   name :str
   discription : str
   packageprice : int
-  packageImage : str
+  packageImage : Optional[str] = None
 
-
-
-  class Config:
-    orm_mode = True #means using sqlalqumy
 
 #updatecommentschema
 class UpdatePackageSchema(BaseModel):
    name :str
    discription : str
    packageprice : int
-   packageImage : str
-
-
-   class Config:
-    orm_mode = True
+   packageImage : Optional[str] = None

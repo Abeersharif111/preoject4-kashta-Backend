@@ -8,13 +8,13 @@ router = APIRouter()
 
 @router.post("/register", response_model=UserSchema)
 def create_user(user: UserRegistrationSchema, db: Session = Depends(get_db)):
-    #1- Check if the username or email already exists and uniqe
+    #1- Check if the username already exists and uniqe
     existing_user = db.query(UserModel).filter(UserModel.username == user.username ).first()  #here checking one of them is wrong
                                 #this is python or
     if existing_user:
         raise HTTPException(status_code=400, detail="Username already exists")
 
-    new_user = UserModel(username=user.username, role=user.role) #2-put the user in memory then
+    new_user = UserModel(username=user.username) #2-put the user in memory then
     # Use the set_password method to hash the password
     new_user.set_password(user.password) #3- call the metod to crypt the password
 
@@ -22,7 +22,12 @@ def create_user(user: UserRegistrationSchema, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(new_user)
 
-    return new_user
+     # Generate JWT token
+    token = new_user.generate_token()
+           #this is the instance in the db
+    # Return token and a success message
+    return {"token": token, "message": "Login successful"}
+
 
 
 @router.post("/login", response_model=UserTokenSchema)

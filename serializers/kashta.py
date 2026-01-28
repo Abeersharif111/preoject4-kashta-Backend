@@ -3,6 +3,8 @@
 from pydantic import BaseModel
 from typing import Optional, List
 from models.kashta import CategoryEnum
+from .user import UserSchema
+from .package import PackageSchema
 
 #controling outgoing
 #doing serialization when sending data to the user or browser by convert it from js to Json
@@ -13,10 +15,10 @@ class KashtaSchema(BaseModel):
   discription: str
   kashtaPrice : int
   category : CategoryEnum
-  kashtaImage : str
+  kashtaImage : Optional[str] = None
 
-  #user: UserSchema
-  #comments: List[CommentSchema] = []
+  user: UserSchema
+  packages: List[PackageSchema] = []
 
   class Config:
     orm_mode = True
@@ -29,7 +31,7 @@ class CreateKashtaSchema(BaseModel):
   discription: str
   kashtaPrice : int 
   category : CategoryEnum
-  kashtaImage : str
+  kashtaImage : Optional[str] = None
 
 
 class UpdateKashtaSchema(BaseModel):
@@ -37,5 +39,5 @@ class UpdateKashtaSchema(BaseModel):
   city: str
   kashtaPrice : int 
   category : CategoryEnum
-  kashtaImage : str
+  kashtaImage : Optional[str] = None
 

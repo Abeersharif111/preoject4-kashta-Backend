@@ -1,7 +1,7 @@
 from fastapi import APIRouter , Depends , HTTPException #importing the library
 #SQL.ALQUMY
 from sqlalchemy.orm import Session
-from models.package import PackagetModel 
+from models.package import PackageModel 
 from models.kashta import KashtaModel
 from models.user import UserModel 
 #SERIALIZER
@@ -11,11 +11,8 @@ from typing import List
 from database import get_db 
 from dependencies.get_current_user import get_current_user  # Import the get_current_user function
 
-
-
 router = APIRouter()
 
- 
 #get all packages
 @router.get("/kashtas/{kashta_id}/packages", response_model=List[PackageSchema])
 def get_packages_for_kashta(kashta_id: int, db: Session = Depends(get_db)):
@@ -27,7 +24,7 @@ def get_packages_for_kashta(kashta_id: int, db: Session = Depends(get_db)):
 #get one package
 @router.get("/packages/{package_id}", response_model=PackageSchema)
 def get_package(package_id: int, db: Session = Depends(get_db)):
-    package = db.query(PackagetModel).filter(PackagetModel.id == package_id).first()
+    package = db.query(PackageModel).filter(PackageModel.id == package_id).first()
     if not package:
         raise HTTPException(status_code=404, detail="Comment not found")
     return package
@@ -39,7 +36,7 @@ def create_package(kashta_id: int, package: CreatePackageSchema, db: Session = D
     if not kashta:
         raise HTTPException(status_code=404, detail="kashta not found")
     
-    new_package = PackagetModel(**package.dict(), kashta_id=kashta_id , user_id=current_user.id)
+    new_package = PackageModel(**package.dict(), kashta_id=kashta_id , owner_id=current_user.id)
     db.add(new_package)
     db.commit()
     db.refresh(new_package)
@@ -48,7 +45,7 @@ def create_package(kashta_id: int, package: CreatePackageSchema, db: Session = D
 #update the package
 @router.put("/packages/{package_id}", response_model=PackageSchema)
 def update_package(package_id: int, package: UpdatePackageSchema, db: Session = Depends(get_db),current_user: UserModel = Depends(get_current_user)):
-    db_package = db.query(PackagetModel).filter(PackagetModel.id == package_id).first()
+    db_package = db.query(PackageModel).filter(PackageModel.id == package_id).first()
     if not db_package:
         raise HTTPException(status_code=404, detail="package not found")
     
@@ -65,7 +62,7 @@ def update_package(package_id: int, package: UpdatePackageSchema, db: Session = 
 
 @router.delete("/packages/{package_id}")
 def delete_package(package_id: int, db: Session = Depends(get_db),current_user: UserModel = Depends(get_current_user)):
-    db_package = db.query(PackagetModel).filter(PackagetModel.id == package_id).first()
+    db_package = db.query(PackageModel).filter(PackageModel.id == package_id).first()
     if not db_package:
         raise HTTPException(status_code=404, detail="package not found")
     # Check if the current user is the creator of the tea

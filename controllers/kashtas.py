@@ -21,6 +21,7 @@ def get_kashtas(db : Session = Depends(get_db)): #means is it a valid session of
                 # this is the req,res ..
     # Retrieve all teas
     kashtas = db.query(KashtaModel).all()
+    print(kashtas)
     #database model query from teamodle bring all 
     return kashtas
 

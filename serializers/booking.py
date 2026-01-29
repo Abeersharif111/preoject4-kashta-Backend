@@ -11,10 +11,8 @@ from datetime import date
 class BookingSchema(BaseModel):
   id: int
   bookingDate : date
-  
-  user: UserSchema
+  renter: UserSchema
 
-  
   class Config:
     orm_mode = True
     
@@ -22,15 +20,6 @@ class BookingSchema(BaseModel):
 class CreateBookingSchema(BaseModel):
    bookingDate : date
 
-
-
-   class Config:
-    orm_mode = True #means using sqlalqumy
-
 #updatecommentschema
 class UpdateBookingSchema(BaseModel):
     bookingDate : date
-
-
-    class Config:
-     orm_mode = True

@@ -39,7 +39,7 @@ def create_booking(kashta_id: int, booking: CreateBookingSchema, db: Session = D
     if not kashta:
         raise HTTPException(status_code=404, detail="kashta not found")
     
-    new_booking = BookingModel(**booking.dict(), kashta_id=kashta_id , user_id=current_user.id)
+    new_booking = BookingModel(**booking.dict(), kashta_id=kashta_id , renter_id=current_user.id)
     db.add(new_booking)
     db.commit()
     db.refresh(new_booking)
